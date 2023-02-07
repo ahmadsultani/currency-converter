@@ -6,9 +6,10 @@ interface IResultProps {
   source: string;
   target: string;
   amount: number;
+  isReady: boolean;
 }
 
-function Result({ source, target, amount }: IResultProps) {
+function Result({ source, target, amount, isReady }: IResultProps) {
   const query = useQuery(["exchange", source, target, amount], fetchData, {
     onSuccess: (data) => {
       console.log(data);
@@ -19,17 +20,51 @@ function Result({ source, target, amount }: IResultProps) {
       },
       result: 0,
     },
+    enabled: isReady,
+    retry: 0,
   });
 
-  const { data, isError, isPreviousData, isFetching } = query;
+  const { data, isError, isFetching, isPlaceholderData } = query;
 
+  if (isPlaceholderData && !isReady) {
+    return (
+      <VStack pt={9} pb={2} spacing={0}>
+        <Text
+          mb={0}
+          fontSize="md"
+          fontWeight={600}
+          color={"whiteAlpha.800"}
+          letterSpacing={1}
+        >
+          {" "}
+          RESULT:{" "}
+        </Text>
+        <Text
+          fontWeight={500}
+          p={0}
+          m={0}
+          letterSpacing={1}
+          color={"teal.400"}
+          fontSize="2xl"
+        >
+          0
+        </Text>
+      </VStack>
+    );
+  }
 
   if (isError) {
     return (
-      <VStack pt={8} spacing={0}>
-        <Text m={0} fontSize="lg" color={"whiteAlpha.800"} letterSpacing={1}>
+      <VStack pt={9} pb={2} spacing={0}>
+        <Text
+          mb={0}
+          fontSize="md"
+          fontWeight={600}
+          color={"whiteAlpha.800"}
+          letterSpacing={1}
+        >
           {" "}
-          Result:{" "}
+          RESULT:{" "}
         </Text>
         <Text
           fontWeight={500}
@@ -45,12 +80,18 @@ function Result({ source, target, amount }: IResultProps) {
     );
   }
 
-  if (isFetching && !isPreviousData) {
+  if (isFetching ) {
     return (
-      <VStack pt={8} spacing={0}>
-        <Text m={0} fontSize="lg" color={"whiteAlpha.800"} letterSpacing={1}>
+      <VStack pt={9} pb={2} spacing={0}>
+        <Text
+          mb={0}
+          fontSize="md"
+          fontWeight={600}
+          color={"whiteAlpha.800"}
+          letterSpacing={1}
+        >
           {" "}
-          Result:{" "}
+          RESULT:{" "}
         </Text>
         <Text
           fontWeight={500}
@@ -74,10 +115,16 @@ function Result({ source, target, amount }: IResultProps) {
   const displayResult = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   return (
-    <VStack pt={8} spacing={0}>
-      <Text m={0} fontSize="lg" color={"whiteAlpha.800"} letterSpacing={1}>
+    <VStack pt={9} pb={2} spacing={0}>
+      <Text
+        mb={0}
+        fontSize="md"
+        fontWeight={600}
+        color={"whiteAlpha.800"}
+        letterSpacing={1}
+      >
         {" "}
-        Result:{" "}
+        RESULT:{" "}
       </Text>
       <Text
         fontWeight={500}
@@ -87,10 +134,10 @@ function Result({ source, target, amount }: IResultProps) {
         color={"teal.400"}
         fontSize="2xl"
       >
-        {source} {displayResult}
+        {target} {displayResult}
       </Text>
-      <Text fontSize="xs" p={1} letterSpacing={0.5} color={"whiteAlpha.800"}>
-        {`Rate: ${rate}`}
+      <Text fontSize={10} p={1} letterSpacing={0.5} color={"whiteAlpha.800"}>
+        {`${source} 1 = ${target} ${rate}`}
       </Text>
     </VStack>
   );

@@ -10,6 +10,7 @@ export const App = () => {
   const [sourceCurrency, setSourceCurrency] = useState("");
   const [targetCurrency, setTargetCurrency] = useState("");
   const [amount, setAmount] = useState(0);
+  const [isReady, setIsReady] = useState(false);
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -45,11 +46,13 @@ export const App = () => {
                 setSourceCurrency={setSourceCurrency}
                 setTargetCurrency={setTargetCurrency}
                 setAmount={setAmount}
+                setIsReady={setIsReady}
               />
               <Result 
                 source={sourceCurrency}
                 target={targetCurrency}
                 amount={amount}
+                isReady={isReady}
               />
             </Box>
           </Grid>

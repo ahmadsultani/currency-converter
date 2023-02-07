@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(container)
 
 root.render(
   <React.StrictMode>
-    <ColorModeScript />
+    <ColorModeScript  />
     <App />
   </React.StrictMode>,
 )
