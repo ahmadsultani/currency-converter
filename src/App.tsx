@@ -42,13 +42,13 @@ export const App = () => {
               >
                 EXCHANGE
               </Text>
-              <Form 
+              <Form
                 setSourceCurrency={setSourceCurrency}
                 setTargetCurrency={setTargetCurrency}
                 setAmount={setAmount}
                 setIsReady={setIsReady}
               />
-              <Result 
+              <Result
                 source={sourceCurrency}
                 target={targetCurrency}
                 amount={amount}

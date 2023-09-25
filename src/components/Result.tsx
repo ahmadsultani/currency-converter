@@ -20,8 +20,9 @@ function Result({ source, target, amount, isReady }: IResultProps) {
       },
       result: 0,
     },
-    enabled: isReady,
     retry: 0,
+    enabled: isReady,
+    keepPreviousData: true,
   });
 
   const { data, isError, isFetching, isPlaceholderData } = query;
@@ -47,7 +48,7 @@ function Result({ source, target, amount, isReady }: IResultProps) {
           color={"teal.400"}
           fontSize="2xl"
         >
-          0
+          {0}
         </Text>
       </VStack>
     );
@@ -80,7 +81,7 @@ function Result({ source, target, amount, isReady }: IResultProps) {
     );
   }
 
-  if (isFetching ) {
+  if (isFetching) {
     return (
       <VStack pt={9} pb={2} spacing={0}>
         <Text
@@ -112,7 +113,10 @@ function Result({ source, target, amount, isReady }: IResultProps) {
     result,
   } = data as IDataResponse;
 
-  const displayResult = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const displayResult = result.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
   return (
     <VStack pt={9} pb={2} spacing={0}>
@@ -137,7 +141,10 @@ function Result({ source, target, amount, isReady }: IResultProps) {
         {target} {displayResult}
       </Text>
       <Text fontSize={10} p={1} letterSpacing={0.5} color={"whiteAlpha.800"}>
-        {`${source} 1 = ${target} ${rate}`}
+        {`${source} 1 = ${target} ${rate.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 4,
+        })}`}
       </Text>
     </VStack>
   );
